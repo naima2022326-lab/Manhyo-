@@ -30,6 +30,10 @@ body{
   align-items:center;
   justify-content:center;
   backdrop-filter:blur(20px);
+
+  z-index:999999; /* keeps it on top */
+  opacity:1;
+  transition:opacity .3s ease;
 }
 
 .login-container{
