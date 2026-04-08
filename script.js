@@ -94,3 +94,37 @@ window.addEventListener("keydown", e=>{
     window.location.href = "https://google.com";
   }
 });
+
+// ⭐ SAVE BOOKMARK
+function saveBookmark(){
+  const url = document.getElementById("searchInput").value.trim();
+  if(!url) return;
+
+  let list = JSON.parse(localStorage.getItem("bm") || "[]");
+
+  if(!list.includes(url)){
+    list.push(url);
+    localStorage.setItem("bm", JSON.stringify(list));
+    loadBookmarks();
+  }
+}
+
+// 📂 LOAD BOOKMARKS
+function loadBookmarks(){
+  const container = document.getElementById("bookmarks");
+  if(!container) return;
+
+  let list = JSON.parse(localStorage.getItem("bm") || "[]");
+
+  container.innerHTML = "";
+
+  list.forEach(url=>{
+    const btn = document.createElement("button");
+    btn.textContent = url;
+    btn.onclick = ()=> openReader(url);
+    container.appendChild(btn);
+  });
+}
+
+// LOAD ON START
+loadBookmarks();
