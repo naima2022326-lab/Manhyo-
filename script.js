@@ -88,3 +88,9 @@ document.addEventListener("fullscreenchange",()=>{
     closeReader();
   }
 });
+
+window.addEventListener("keydown", e=>{
+  if(e.key === "`"){ // press the ` key
+    window.location.href = "https://google.com";
+  }
+});
