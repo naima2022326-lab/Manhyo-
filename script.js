@@ -37,13 +37,14 @@ pw.addEventListener("keydown",e=>{
 function openProxy(){
   let url = document.getElementById("searchInput").value.trim();
 
+  if(!url) return;
+
   if(!url.startsWith("http")){
     url = "https://" + url;
   }
 
   openReader(url);
 }
-
 // =====================
 // 📖 READER SYSTEM
 // =====================
