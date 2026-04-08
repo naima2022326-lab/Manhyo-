@@ -411,3 +411,24 @@ body::after{
   color:white;
   cursor:pointer;
 }
+
+#bookmarks{
+  margin-top:30px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+}
+
+#bookmarks button{
+  padding:8px 14px;
+  border:none;
+  border-radius:10px;
+  background:rgba(255,255,255,.1);
+  color:white;
+  cursor:pointer;
+  transition:.2s;
+}
+
+#bookmarks button:hover{
+  background:rgba(139,92,246,.5);
+}
