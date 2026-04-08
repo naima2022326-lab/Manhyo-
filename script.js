@@ -1,76 +1,35 @@
-// 🔐 PASSWORD GENERATOR SYSTEM
-const loginEl = document.getElementById("login");
-const appEl = document.getElementById("app");
-const pw = document.getElementById("pw");
+// 🔐 LOGIN SYSTEM (FIXED)
 
-// elements
-const display = document.createElement("h2");
-display.style.marginBottom = "20px";
-display.style.letterSpacing = "4px";
-display.style.fontSize = "1.5rem";
-display.style.opacity = "0.8";
+const login = document.getElementById("login");
+const app = document.getElementById("app");
+const input = document.getElementById("pw");
 
-document.querySelector(".login-container").prepend(display);
+// your password (change this)
+const PASSWORD = "manhyo123";
 
-// LOCK CHECK
-const lockUntil = localStorage.getItem("lockUntil");
-if(lockUntil && Date.now() < lockUntil){
-  const mins = Math.ceil((lockUntil - Date.now()) / 60000);
-  display.textContent = "Locked " + mins + " min";
-  pw.disabled = true;
-} else {
-  startGenerator();
-}
+function checkPassword() {
+  const value = input.value.trim();
 
-let secret = "";
+  if (value === PASSWORD) {
+    // ✅ correct → show app
+    login.style.display = "none";
+    app.style.display = "block";
 
-// 🎰 GENERATOR ANIMATION
-function startGenerator(){
-  let chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    // optional: remember login
+    localStorage.setItem("loggedIn", "true");
 
-  let interval = setInterval(()=>{
-    secret = "";
-    for(let i=0;i<6;i++){
-      secret += chars[Math.floor(Math.random()*chars.length)];
-    }
-    display.textContent = secret;
-  }, 60);
-
-  // stop after 2 sec → final password
-  setTimeout(()=>{
-    clearInterval(interval);
-
-    // ⏱ hide after 10 seconds
-    setTimeout(()=>{
-      display.textContent = "Enter Password";
-    },10000);
-
-  },2000);
-}
-
-// LOGIN
-function login(){
-  if(pw.value !== secret){
-    pw.value = "";
-    pw.placeholder = "Wrong password";
-
-    // ❌ LOCK 10 MINUTES
-    localStorage.setItem("lockUntil", Date.now() + 600000);
-
-    location.reload();
-    return;
+  } else {
+    // ❌ wrong → just clear input (NO lock)
+    input.value = "";
+    input.placeholder = "Wrong password";
   }
-
-  // ✅ SUCCESS
-  loginEl.style.opacity = "0";
-
-  setTimeout(()=>{
-    loginEl.style.display = "none";
-    appEl.style.display = "block";
-  },300);
 }
 
-// ENTER KEY
-pw.addEventListener("keydown", e=>{
-  if(e.key === "Enter") login();
+// ⌨️ ENTER KEY FIX
+input.addEventListener("keydown", function(e) {
+  if (e.key === "Enter") {
+    checkPassword();
+  }
 });
+
+// 🔄 AUTO LOGIN (
