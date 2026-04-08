@@ -111,10 +111,11 @@ body{
 /* LAYOUT */
 .layout{
   display:grid;
-  grid-template-columns:1fr 1.2fr;
-  gap:60px;
-  max-width:1300px;
+  grid-template-columns:1fr;
+  gap:40px;
+  max-width:900px;
   margin:auto;
+  text-align:center;
 }
 
 /* LEFT SIDE */
@@ -127,18 +128,19 @@ body{
 }
 
 .left p{
-  opacity:.75;
-  line-height:1.7;
-  max-width:480px;
+  opacity:.7;
+  line-height:1.6;
+  max-width:500px;
+  margin:auto;
 }
 
 /* GRID */
 .grid{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:24px;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:20px;
+  margin-top:10px;
 }
-
 /* CARDS */
 .card{
   background:rgba(0,0,0,.4);
@@ -271,4 +273,41 @@ body{
 @keyframes pulse{
   0%,100%{opacity:.4;}
   50%{opacity:1;}
+}
+
+/* RECENTS SECTION */
+.recents{
+  margin-top:50px;
+  text-align:left;
+}
+
+.recents h2{
+  font-size:1.2rem;
+  margin-bottom:15px;
+  opacity:.8;
+  letter-spacing:1px;
+}
+
+.recents-list{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+}
+
+.recent-item{
+  padding:10px 16px;
+  border-radius:14px;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(139,92,246,.3);
+  cursor:pointer;
+  transition:.2s;
+  font-size:.85rem;
+  max-width:180px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.recent-item:hover{
+  background:rgba(139,92,246,.4);
 }
