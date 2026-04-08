@@ -56,9 +56,13 @@ document.querySelectorAll(".card").forEach(card=>{
 function openReader(url){
   overlay.style.display = "block";
   loader.style.display = "flex";
-  reader.src = "/service/" + __uv$config.encodeUrl(url);
-  setTimeout(()=>overlay.requestFullscreen?.(),50);
-  reader.onload = ()=>loader.style.display="none";
+
+  // Directly load the URL in the iframe
+  reader.src = url;
+
+  reader.onload = () => {
+    loader.style.display = "none";
+  };
 }
 
 function closeReader(){
