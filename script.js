@@ -1,4 +1,4 @@
-const secret = "D3r5t0n3";
+const secretHash = "e2fc714c4727ee9395f324cd2e7f331f"; // example md5
 
 const loginEl = document.getElementById("login");
 const appEl = document.getElementById("app");
