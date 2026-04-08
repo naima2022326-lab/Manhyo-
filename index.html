@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Google Classroom</title>
-  
+
 <link rel="icon" href="https://ssl.gstatic.com/classroom/favicon.png">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
@@ -18,7 +18,6 @@
   <div class="login-container">
     <h1 class="logo">MANHYO</h1>
     <p class="tagline">Private Reader Hub</p>
-
     <div class="input-box">
       <input type="password" id="pw" placeholder="Enter Password" />
       <div class="input-glow"></div>
@@ -28,20 +27,13 @@
 
 <!-- 🌐 APP -->
 <div id="app">
-
-  <!-- 🔝 TOP BAR (NEW like Yorimu) -->
   <div class="topbar">
     <div class="brand">MANHYO</div>
-
-    <!-- you can add logo later here -->
-   <div class="top-actions">
-  <input id="searchInput" placeholder="Enter URL..." />
-  <button onclick="openProxy()">Go</button>
-  <button onclick="saveBookmark()">⭐</button>
-  <div id="bookmarks"></div>
-</div>
+    <div class="top-actions">
       <input id="searchInput" placeholder="Enter URL..." />
       <button onclick="openProxy()">Go</button>
+      <button onclick="saveBookmark()">⭐</button>
+      <div id="bookmarks"></div>
     </div>
   </div>
 
@@ -53,27 +45,22 @@
 
     <div class="right">
       <div class="grid">
-
         <div class="card" data-url="https://asuracomic.net">
           <h3>AsuraScans</h3>
           <p>Fast updates, clean reader.</p>
         </div>
-
         <div class="card" data-url="https://ezmanga.org">
           <h3>Ezmanga</h3>
           <p>Simple manga library.</p>
         </div>
-
         <div class="card" data-url="https://comix.to">
           <h3>Comix</h3>
           <p>Huge catalog.</p>
         </div>
-
         <div class="card" data-url="https://mathplayground.com">
           <h3>Mathplayground</h3>
           <p>Just for fun.</p>
         </div>
-
       </div>
     </div>
   </div>
@@ -82,7 +69,6 @@
 <!-- 📖 READER -->
 <div id="overlay">
   <div id="loader">Loading...</div>
-
   <iframe id="reader"
     allow="fullscreen; autoplay"
     referrerpolicy="no-referrer"
