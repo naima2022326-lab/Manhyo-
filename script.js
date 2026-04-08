@@ -1,59 +1,121 @@
-// 🔐 PASSWORD SYSTEM (GENERATOR + FIXED LOGIN)
+// 🔐 INSTANT PASSWORD GENERATOR LOGIN
+const loginEl = document.getElementById("login");
+const appEl = document.getElementById("app");
+const pw = document.getElementById("pw");
 
-const login = document.getElementById("login");
-const app = document.getElementById("app");
-const input = document.getElementById("pw");
+let generatedPassword = "";
+let passwordTimeout;
+let canGenerate = true;
 
-// hide app first
-app.style.display = "none";
+// HOME page hidden by default
+appEl.style.display = "none";
 
-// 🎲 generate random password
+// Function to generate random password
 function generatePassword() {
-  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   let pass = "";
-  for (let i = 0; i < 6; i++) {
-    pass += chars[Math.floor(Math.random() * chars.length)];
+  for (let i = 0; i < 8; i++) {
+    pass += chars.charAt(Math.floor(Math.random() * chars.length));
   }
   return pass;
 }
 
-let currentPassword = generatePassword();
+// Start password generator instantly
+function startPasswordCycle() {
+  if (!canGenerate) return;
+  canGenerate = false;
 
-// 🧠 SHOW PASSWORD AT TOP
-const display = document.createElement("div");
-display.id = "generatedPassword";
-display.style.textAlign = "center";
-display.style.marginBottom = "20px";
-display.style.fontSize = "18px";
-display.style.opacity = "0.8";
-display.innerText = "Password: " + currentPassword;
+  generatedPassword = generatePassword();
+  pw.value = "";
+  pw.placeholder = `Password: ${generatedPassword} (10s!)`;
 
-document.querySelector(".login-container").prepend(display);
+  // 10 seconds to memorize
+  passwordTimeout = setTimeout(() => {
+    pw.value = "";
+    pw.placeholder = "Wait 10 minutes for new password";
+    setTimeout(() => {
+      canGenerate = true;
+      startPasswordCycle();
+    }, 600000); // 10 minutes
+  }, 10000);
+}
 
-// ⏱️ 10 SECOND MEMORY TIMER
-setTimeout(() => {
-  display.innerText = "Password hidden. Wait 10 minutes if you forgot.";
-}, 10000);
-
-// 🔐 CHECK PASSWORD
-function checkPassword() {
-  const value = input.value.trim();
-
-  if (value === currentPassword) {
-    // ✅ SUCCESS → SHOW SITE
-    login.style.display = "none";
-    app.style.display = "block";
-
+// LOGIN function
+function login() {
+  if (pw.value === generatedPassword) {
+    clearTimeout(passwordTimeout);
+    loginEl.style.opacity = "0";
+    setTimeout(() => {
+      loginEl.style.display = "none";
+      appEl.style.display = "block"; // show old homepage
+    }, 400);
   } else {
-    // ❌ WRONG → CLEAR ONLY (NO LOCK)
-    input.value = "";
-    input.placeholder = "Wrong password";
+    pw.value = "";
+    pw.placeholder = "Wrong password!";
+    pw.style.border = "1px solid red";
+    setTimeout(() => {
+      pw.placeholder = `Password: ${generatedPassword} (10s!)`;
+      pw.style.border = "1px solid rgba(255,255,255,.2)";
+    }, 1200);
   }
 }
 
-// ⌨️ ENTER KEY FIX
-input.addEventListener("keydown", function (e) {
-  if (e.key === "Enter") {
-    checkPassword();
+// ENTER key works
+pw.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") login();
+});
+
+// Start immediately on page load
+startPasswordCycle();
+
+// =====================
+// 🌐 PROXY INPUT
+// =====================
+function openProxy() {
+  let url = document.getElementById("searchInput").value.trim();
+  if (!url) return;
+  if (!url.startsWith("http")) url = "https://" + url;
+  openReader(url);
+}
+
+// =====================
+// 📖 READER SYSTEM
+// =====================
+const overlay = document.getElementById("overlay");
+const reader = document.getElementById("reader");
+const loader = document.getElementById("loader");
+
+function openReader(url) {
+  localStorage.setItem("lastSite", url);
+  overlay.style.display = "block";
+  loader.style.display = "flex";
+  reader.src = "/service/" + __uv$config.encodeUrl(url);
+  setTimeout(() => overlay.requestFullscreen?.(), 50);
+  reader.onload = () => (loader.style.display = "none");
+}
+
+// CARD CLICK
+document.querySelectorAll(".card").forEach((card) => {
+  card.addEventListener("click", () => {
+    openReader(card.dataset.url);
+  });
+});
+
+// CLOSE READER
+function closeReader() {
+  document.exitFullscreen?.();
+  overlay.style.display = "none";
+  reader.src = "";
+}
+
+// ESC CLOSE
+window.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") closeReader();
+});
+
+// PANIC KEY
+window.addEventListener("keydown", (e) => {
+  if (e.key === "`") {
+    window.location.href = "https://google.com";
   }
 });
