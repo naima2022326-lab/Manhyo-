@@ -6,53 +6,64 @@
 <title>Manhyo Reader</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
-
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
+<!-- 🔐 LOGIN -->
 <div id="login">
   <div class="login-container">
-
     <h1 class="logo">MANHYO</h1>
-
     <p class="tagline">Private Reader Hub</p>
 
     <div class="input-box">
       <input type="password" id="pw" placeholder="Enter Password" />
       <div class="input-glow"></div>
     </div>
-
   </div>
 </div>
 
+<!-- 🌐 APP -->
 <div id="app">
+
+  <!-- 🔝 TOP BAR (NEW like Yorimu) -->
+  <div class="topbar">
+    <div class="brand">MANHYO</div>
+
+    <!-- you can add logo later here -->
+    <div class="top-actions">
+      <input id="searchInput" placeholder="Enter URL..." />
+      <button onclick="openProxy()">Go</button>
+    </div>
+  </div>
+
   <div class="layout">
     <div class="left">
       <h1>MANHYO</h1>
-      <p>Manhyo is a private reader hub that lets you open your favorite sites in fullscreen without distractions.</p>
+      <p>Private reader hub with fullscreen browsing.</p>
     </div>
+
     <div class="right">
       <div class="grid">
 
         <div class="card" data-url="https://asuracomic.net">
           <h3>AsuraScans</h3>
-          <p>Fast updates, popular manhwa, clean reader.</p>
+          <p>Fast updates, clean reader.</p>
         </div>
 
         <div class="card" data-url="https://ezmanga.org">
           <h3>Ezmanga</h3>
-          <p>Manga-focused library with simple navigation.</p>
+          <p>Simple manga library.</p>
         </div>
 
         <div class="card" data-url="https://comix.to">
           <h3>Comix</h3>
-          <p>Huge catalog with vertical scroll support.</p>
+          <p>Huge catalog.</p>
         </div>
 
         <div class="card" data-url="https://mathplayground.com">
-          <h3>Mathpla</h3>
-          <p>Ples enjoy playing</p>
+          <h3>Mathplayground</h3>
+          <p>Just for fun.</p>
         </div>
 
       </div>
@@ -60,6 +71,7 @@
   </div>
 </div>
 
+<!-- 📖 READER -->
 <div id="overlay">
   <div id="loader">Loading...</div>
 
