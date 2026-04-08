@@ -128,3 +128,11 @@ function loadBookmarks(){
 
 // LOAD ON START
 loadBookmarks();
+
+// 🔁 RESTORE LAST SITE
+window.addEventListener("load", ()=>{
+  const last = localStorage.getItem("lastSite");
+  if(last){
+    console.log("Last site:", last);
+  }
+});
