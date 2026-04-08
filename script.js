@@ -1,121 +1,77 @@
-// 🔐 INSTANT PASSWORD GENERATOR LOGIN
+// 🔐 PASSWORD GENERATOR
+function generatePassword(length=8){
+  const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*";
+  let pw = "";
+  for(let i=0;i<length;i++){
+    pw += chars[Math.floor(Math.random()*chars.length)];
+  }
+  return pw;
+}
+
+// STORE GENERATED PASSWORD
+const secret = generatePassword(10);
+document.getElementById("generatedPw").textContent = secret;
+
+// LOGIN
 const loginEl = document.getElementById("login");
 const appEl = document.getElementById("app");
-const pw = document.getElementById("pw");
+const pwInput = document.getElementById("pw");
 
-let generatedPassword = "";
-let passwordTimeout;
-let canGenerate = true;
+function login(){
+  if(pwInput.value !== secret){
+    pwInput.value = "";
+    pwInput.placeholder = "Wrong password";
+    pwInput.style.border = "1px solid red";
 
-// HOME page hidden by default
-appEl.style.display = "none";
-
-// Function to generate random password
-function generatePassword() {
-  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  let pass = "";
-  for (let i = 0; i < 8; i++) {
-    pass += chars.charAt(Math.floor(Math.random() * chars.length));
+    setTimeout(()=>{
+      pwInput.placeholder = "Enter Password";
+      pwInput.style.border = "1px solid rgba(255,255,255,.2)";
+    },1200);
+    return;
   }
-  return pass;
+
+  loginEl.style.opacity = "0";
+  setTimeout(()=>{
+    loginEl.style.display = "none";
+    appEl.style.display = "block";
+  },400);
 }
 
-// Start password generator instantly
-function startPasswordCycle() {
-  if (!canGenerate) return;
-  canGenerate = false;
-
-  generatedPassword = generatePassword();
-  pw.value = "";
-  pw.placeholder = `Password: ${generatedPassword} (10s!)`;
-
-  // 10 seconds to memorize
-  passwordTimeout = setTimeout(() => {
-    pw.value = "";
-    pw.placeholder = "Wait 10 minutes for new password";
-    setTimeout(() => {
-      canGenerate = true;
-      startPasswordCycle();
-    }, 600000); // 10 minutes
-  }, 10000);
-}
-
-// LOGIN function
-function login() {
-  if (pw.value === generatedPassword) {
-    clearTimeout(passwordTimeout);
-    loginEl.style.opacity = "0";
-    setTimeout(() => {
-      loginEl.style.display = "none";
-      appEl.style.display = "block"; // show old homepage
-    }, 400);
-  } else {
-    pw.value = "";
-    pw.placeholder = "Wrong password!";
-    pw.style.border = "1px solid red";
-    setTimeout(() => {
-      pw.placeholder = `Password: ${generatedPassword} (10s!)`;
-      pw.style.border = "1px solid rgba(255,255,255,.2)";
-    }, 1200);
-  }
-}
-
-// ENTER key works
-pw.addEventListener("keydown", (e) => {
-  if (e.key === "Enter") login();
+// ENTER KEY
+pwInput.addEventListener("keydown", e=>{
+  if(e.key === "Enter") login();
 });
 
-// Start immediately on page load
-startPasswordCycle();
-
-// =====================
-// 🌐 PROXY INPUT
-// =====================
-function openProxy() {
-  let url = document.getElementById("searchInput").value.trim();
-  if (!url) return;
-  if (!url.startsWith("http")) url = "https://" + url;
-  openReader(url);
-}
-
-// =====================
-// 📖 READER SYSTEM
-// =====================
+// 🌐 READER
 const overlay = document.getElementById("overlay");
 const reader = document.getElementById("reader");
 const loader = document.getElementById("loader");
 
-function openReader(url) {
-  localStorage.setItem("lastSite", url);
-  overlay.style.display = "block";
-  loader.style.display = "flex";
-  reader.src = "/service/" + __uv$config.encodeUrl(url);
-  setTimeout(() => overlay.requestFullscreen?.(), 50);
-  reader.onload = () => (loader.style.display = "none");
-}
-
-// CARD CLICK
-document.querySelectorAll(".card").forEach((card) => {
-  card.addEventListener("click", () => {
+document.querySelectorAll(".card").forEach(card=>{
+  card.addEventListener("click", ()=>{
     openReader(card.dataset.url);
   });
 });
 
-// CLOSE READER
-function closeReader() {
+function openReader(url){
+  overlay.style.display = "block";
+  loader.style.display = "flex";
+  reader.src = "/service/" + __uv$config.encodeUrl(url);
+  setTimeout(()=>overlay.requestFullscreen?.(),50);
+  reader.onload = ()=>loader.style.display="none";
+}
+
+function closeReader(){
   document.exitFullscreen?.();
   overlay.style.display = "none";
   reader.src = "";
 }
 
-// ESC CLOSE
-window.addEventListener("keydown", (e) => {
-  if (e.key === "Escape") closeReader();
+window.addEventListener("keydown", e=>{
+  if(e.key === "Escape") closeReader();
+  if(e.key === "`") window.location.href = "https://google.com";
 });
 
-// PANIC KEY
-window.addEventListener("keydown", (e) => {
-  if (e.key === "`") {
-    window.location.href = "https://google.com";
-  }
+document.addEventListener("fullscreenchange", ()=>{
+  if(!document.fullscreenElement) closeReader();
 });
