@@ -55,7 +55,7 @@ function openReader(url){
   overlay.style.display="block";
   loader.style.display="flex";
 
-  reader.src = url;
+reader.src = "/service/" + __uv$config.encodeUrl(url);
 
   setTimeout(()=>overlay.requestFullscreen?.(),50);
 
