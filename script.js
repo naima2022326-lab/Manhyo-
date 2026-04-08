@@ -1,102 +1,89 @@
-const secret="D3r5t0n3";
-const loginEl=document.getElementById("login");
-const appEl=document.getElementById("app");
-const pw=document.getElementById("pw");
+const secret = "D3r5t0n3";
 
-// 🔐 IMPROVED LOGIN
+const loginEl = document.getElementById("login");
+const appEl = document.getElementById("app");
+const pw = document.getElementById("pw");
+
+// 🔐 LOGIN
 function login(){
-  if(pw.value!==secret){
-    pw.value="";
-    pw.placeholder="Wrong password";
-    pw.style.border="1px solid red";
+  if(pw.value !== secret){
+    pw.value = "";
+    pw.placeholder = "Wrong password";
+    pw.style.border = "1px solid red";
 
     setTimeout(()=>{
-      pw.placeholder="Enter Password";
-      pw.style.border="1px solid rgba(255,255,255,.2)";
+      pw.placeholder = "Enter Password";
+      pw.style.border = "1px solid rgba(255,255,255,.2)";
     },1200);
-
     return;
   }
 
-  // Smooth fade out
-  loginEl.style.transition="opacity 0.4s ease";
-  loginEl.style.opacity="0";
+  loginEl.style.opacity = "0";
 
   setTimeout(()=>{
-    loginEl.style.display="none";
-    appEl.style.display="block";
+    loginEl.style.display = "none";
+    appEl.style.display = "block";
   },400);
 }
 
-// ⌨️ ENTER TO LOGIN
+// ENTER KEY
 pw.addEventListener("keydown",e=>{
   if(e.key==="Enter") login();
 });
 
-// ===========================
-// 📖 READER SYSTEM (UNCHANGED)
-// ===========================
+// =====================
+// 🌐 PROXY INPUT (NEW)
+// =====================
+function openProxy(){
+  let url = document.getElementById("searchInput").value.trim();
 
+  if(!url.startsWith("http")){
+    url = "https://" + url;
+  }
+
+  openReader(url);
+}
+
+// =====================
+// 📖 READER SYSTEM
+// =====================
 const overlay = document.getElementById("overlay");
 const reader = document.getElementById("reader");
 const loader = document.getElementById("loader");
 
+function openReader(url){
+  overlay.style.display="block";
+  loader.style.display="flex";
+
+  reader.src = url;
+
+  setTimeout(()=>overlay.requestFullscreen?.(),50);
+
+  reader.onload = ()=>{
+    loader.style.display="none";
+  };
+}
+
 document.querySelectorAll(".card").forEach(card=>{
   card.addEventListener("click",()=>{
-    const url = card.dataset.url;
-
-    overlay.style.display="block";
-    loader.style.display="flex";
-
-    reader.src = url;
-
-    setTimeout(()=>overlay.requestFullscreen?.(),50);
-
-    reader.onload = ()=>{
-      loader.style.display="none";
-    };
+    openReader(card.dataset.url);
   });
 });
 
 function closeReader(){
   document.exitFullscreen?.();
-  document.getElementById("overlay").style.display="none";
-  document.getElementById("reader").src="";
+  overlay.style.display="none";
+  reader.src="";
 }
 
-// ESC closes reader
+// ESC CLOSE
 window.addEventListener("keydown",e=>{
-  if(e.key === "Escape"){
-    closeReader();
-  }
+  if(e.key==="Escape") closeReader();
 });
 
-// Exit fullscreen closes reader
+// EXIT FULLSCREEN
 document.addEventListener("fullscreenchange",()=>{
   if(!document.fullscreenElement){
     closeReader();
   }
-});
-
-// Smooth scrolling inside reader
-window.addEventListener("keydown",e=>{
-  if(!document.fullscreenElement) return;
-
-  const url=document.getElementById("reader").src||"";
-  if(url.includes("comix.to")) return;
-
-  const keys=["ArrowDown","ArrowUp","PageDown","PageUp"];
-  if(!keys.includes(e.key)) return;
-
-  e.preventDefault();
-
-  try{
-    document.getElementById("reader").contentWindow.scrollBy({
-      top:
-        e.key==="ArrowDown"?120:
-        e.key==="ArrowUp"?-120:
-        e.key==="PageDown"?500:-500,
-      behavior:"smooth"
-    });
-  }catch{}
 });
